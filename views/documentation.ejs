@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const baseUrl = window.location.origin;
+            document.querySelectorAll('.api-url').forEach(el => {
+                el.textContent = `${baseUrl}/users`;
+            });
+        });
+    </script>
 </head>
 <body>
     <h1><%= title %></h1>
     <ul>
         <li>
             <strong>Get Users</strong><br>
-            Method: GET dengan <code>baseurl/users</code><br>
+            Method: GET dengan <code class="api-url">baseurl/users</code><br>
             Respons:
             <pre>
 {
@@ -20,7 +28,7 @@
         </li>
         <li>
             <strong>Post Users</strong><br>
-            Method: POST dengan <code>baseurl/users</code><br>
+            Method: POST dengan <code class="api-url">baseurl/users</code><br>
             Respons:
             <pre>
 {
