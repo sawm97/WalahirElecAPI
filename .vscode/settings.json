@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/5b765b14-6df2-4233-a20f-47c8d2385264/resourceGroups/dis-training/providers/Microsoft.Web/sites/WalahirElecAPI",
+    "appService.deploySubpath": "."
+}
