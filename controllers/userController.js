@@ -10,15 +10,15 @@ async function fetchUsers(req, res) {
 }
 
 async function addUser(req, res) {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !role) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
     try {
         const hashedPassword = password; // 🔴 Gantilah dengan bcrypt hash di implementasi nyata
-        await createUser(username, email, hashedPassword);
+        await createUser(username, email, hashedPassword, role);
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
         res.status(500).json({ message: err.message });

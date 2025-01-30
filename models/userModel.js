@@ -10,14 +10,15 @@ async function getAllUsers() {
     }
 }
 
-async function createUser(username, email, passwordHash) {
+async function createUser(username, email, passwordHash, role,) {
     try {
         let pool = await connectDB();
         let result = await pool.request()
             .input('username', sql.VarChar, username)
             .input('email', sql.VarChar, email)
             .input('passwordHash', sql.VarChar, passwordHash)
-            .query('INSERT INTO Users (username, email, password_hash) VALUES (@username, @email, @passwordHash)');
+            .input('role', sql.VarChar, role)
+            .query('INSERT INTO Users (username, email, password_hash, role) VALUES (@username, @email, @passwordHash, @role)');
         return result;
     } catch (err) {
         throw new Error('Error creating user: ' + err);
