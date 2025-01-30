@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" href="..public/styles.css">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const baseUrl = window.location.origin;
@@ -14,28 +15,63 @@
     </script>
 </head>
 <body>
-    <h1><%= title %></h1>
-    <ul>
-        <li>
-            <strong>Get Users</strong><br>
-            Method: GET with <code class="api-url">baseurl/users</code><br>
-            Response:
-            <pre>
+    <header>
+        <h1><%= title %></h1>
+    </header>
+
+    <section>
+
+        <h2>Endpoints</h2>
+
+        <h3>1. Get All Users</h3>
+        <p><strong>GET</strong> <code class="api-url">baseurl/users</code></p>
+        <p>Mengambil daftar semua user.</p>
+        <pre>
+            {
+                "id": 1,
+                "username": "john_doe",
+                "email": "john@example.com",
+                "created_at": "2024-01-01T12:00:00Z"
+            }
+        </pre>
+
+        <h3>2. Create User</h3>
+        <p><strong>POST</strong> <code class="api-url">baseurl/users</code></p>
+        <p>Membuat user baru.</p>
+        <pre>
+                Request Body:
+                {
+                    "username": "john_doe",
+                    "email": "john@example.com",
+                    "password": "123456"
+                }
+                        </pre>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 API Documentation</p>
+    </footer>
+<!-- <ul>
+<li>
+<strong>Get Users</strong><br>
+Method: GET with <code class="api-url">baseurl/users</code><br>
+Response:
+<pre>
 {
-    "message": "GET users success"
+"message": "GET users success"
 }
-            </pre>
-        </li>
-        <li>
-            <strong>Post Users</strong><br>
-            Method: POST with <code class="api-url">baseurl/users</code><br>
-            Response:
-            <pre>
+</pre>
+</li>
+<li>
+<strong>Post Users</strong><br>
+Method: POST with <code class="api-url">baseurl/users</code><br>
+Response:
+<pre>
 {
-    "message": "POST users success"
+"message": "POST users success"
 }
-            </pre>
-        </li>
-    </ul>
+</pre>
+</li>
+</ul> -->
 </body>
 </html>
