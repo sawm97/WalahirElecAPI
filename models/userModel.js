@@ -1,15 +1,18 @@
 const { connectDB, sql } = require('../config/databaseConfig');
 
+// GET ALL USERS
 async function getAllUsers() {
     try {
         let pool = await connectDB();
-        let result = await pool.request().query('SELECT * FROM Users');
+        let result = await pool.request()
+            .query('SELECT * FROM Users');
         return result.recordset;
     } catch (err) {
         throw new Error('Error fetching Users: ' + err);
     }
 }
 
+// CREATE USER
 async function createUser(username, email, passwordHash, role,) {
     try {
         let pool = await connectDB();
@@ -25,6 +28,7 @@ async function createUser(username, email, passwordHash, role,) {
     }
 }
 
+// GET USER BY IDENTIFIER (USERNAME/EMAIL)
 async function getUserByIdentifier(identifier) {
     try {
         let pool = await connectDB();
@@ -37,5 +41,26 @@ async function getUserByIdentifier(identifier) {
     }
 }
 
+// UPDATE USER REFRESH TOKEN
+async function updateUserRefreshToken(userId, refreshToken) {
+    try {
+        const pool = await connectDB();
+
+        // Jika refreshToken = null, berarti user logout → Hapus refreshToken
+        await pool.request()
+            .input("userId", sql.Int, userId)
+            .input("refreshToken", sql.NVarChar, refreshToken) // Bisa null saat logout
+            .query(`
+                UPDATE users 
+                SET refresh_token = @refreshToken 
+                WHERE id = @userId
+            `);
+
+        return { success: true, message: "Refresh token updated successfully" };
+    } catch (error) {
+        console.error("Error updating refresh token:", error);
+        return { success: false, message: "Database error" };
+    }
+}
 
 module.exports = { getAllUsers, createUser, getUserByIdentifier };

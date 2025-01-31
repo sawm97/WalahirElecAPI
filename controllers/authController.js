@@ -5,6 +5,8 @@ require('dotenv').config();
 
 let refreshTokens = [];
 
+
+// FUNGSI REGISTER
 async function register(req, res) {
     const { username, email, password, role} = req.body;
 
@@ -21,6 +23,8 @@ async function register(req, res) {
     }
 }
 
+
+// FUNGSI LOGIN
 async function login(req, res) {
     const { identifier, password } = req.body;
 
@@ -60,6 +64,8 @@ function generateRefreshToken(user) {
     );
 }
 
+
+//FUNGSI REFRESH TOKEN
 function refreshToken(req, res) {
     const { token } = req.body;
     if (!token) return res.status(401).json({ message: 'No token provided' });
