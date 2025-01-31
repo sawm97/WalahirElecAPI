@@ -1,4 +1,4 @@
-const { connectDB, sql } = require('../config/database');
+const { connectDB, sql } = require('../config/databaseConfig');
 
 async function getAllUsers() {
     try {
