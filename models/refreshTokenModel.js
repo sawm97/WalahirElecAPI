@@ -8,7 +8,7 @@ async function storeRefreshToken(userId, refreshToken) {
             .input("userId", sql.Int, userId)
             .input("refreshToken", sql.NVarChar, refreshToken)
             .query(`
-                INSERT INTO users_token (user_id, refresh_token) 
+                INSERT INTO Users_Token (user_id, refresh_token) 
                 VALUES (@userId, @refreshToken)
             `);
     } catch (error) {
@@ -23,7 +23,7 @@ async function removeRefreshToken(refreshToken) {
         await pool.request()
             .input("refreshToken", sql.NVarChar, refreshToken)
             .query(`
-                DELETE FROM users_token WHERE refresh_token = @refreshToken
+                DELETE FROM Users_Token WHERE refresh_token = @refreshToken
             `);
     } catch (error) {
         console.error("Error removing refresh token:", error);
@@ -62,8 +62,8 @@ async function findUserByRefreshToken(refreshToken) {
             .query(`
                 SELECT users.id, users.role 
                 FROM users 
-                INNER JOIN users_token ON users.id = users_token.user_id
-                WHERE users_token.refresh_token = @refreshToken
+                INNER JOIN Users_Token ON users.id = Users_Token.user_id
+                WHERE Users_Token.refresh_token = @refreshToken
             `);
         
         return result.recordset.length ? result.recordset[0] : null;

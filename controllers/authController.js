@@ -71,13 +71,13 @@ async function login(req, res) {
         // Simpan refreshToken di database
         await storeRefreshToken(user.id, refreshToken);
 
-        const expiresMinute = process.env.REFRESH_TOKEN_EXPIRY / 1440;
-        res.cookie("refreshToken", refreshToken, {
-            expires: expiresMinute,
-            httpOnly: true,
-            secure: true,
-            sameSite: "Strict"
-        });
+        // const expiresMinute = process.env.REFRESH_TOKEN_EXPIRY / 1440;
+        // res.cookie("refreshToken", refreshToken, {
+        //     expires: expiresMinute,
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: "Strict"
+        // });
 
         res.json({ 
             status: 'success', 
