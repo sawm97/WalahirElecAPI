@@ -25,4 +25,17 @@ async function createUser(username, email, passwordHash, role,) {
     }
 }
 
-module.exports = { getAllUsers, createUser };
+async function getUserByEmail(email) {
+    try {
+        let pool = await connectDB();
+        let result = await pool.request()
+            .input('email', sql.VarChar, email)
+            .query('SELECT * FROM users WHERE email = @email');
+        return result.recordset[0]; // Mengembalikan user pertama yang ditemukan
+    } catch (err) {
+        throw new Error('Error fetching user: ' + err);
+    }
+}
+
+
+module.exports = { getAllUsers, createUser, getUserByEmail };
