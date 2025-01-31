@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { createUser, getUserByEmail } = require('../models/userModel');
+const { createUser, getUserByIdentifier } = require('../models/userModel');
 require('dotenv').config();
 
 let refreshTokens = [];
