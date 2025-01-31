@@ -9,7 +9,7 @@ async function createUser(username, email, passwordHash, role) {
             .input('email', sql.VarChar, email)
             .input('passwordHash', sql.VarChar, passwordHash)
             .input('role', sql.VarChar, role)
-            .query('INSERT INTO users (username, email, password_hash, role) VALUES (@username, @email, @passwordHash, @role)');
+            .query('INSERT INTO Users (username, email, password_hash, role) VALUES (@username, @email, @passwordHash, @role)');
         return result;
     } catch (err) {
         throw new Error('Error creating user: ' + err);
@@ -35,7 +35,7 @@ async function getUserByIdentifier(identifier) {
         let pool = await connectDB();
         let result = await pool.request()
             .input('identifier', sql.VarChar, identifier)
-            .query('SELECT id, username, email, password_hash, role FROM users WHERE email = @identifier OR username = @identifier');
+            .query('SELECT id, username, email, password_hash, role FROM Users WHERE email = @identifier OR username = @identifier');
         return result.recordset[0]; // Mengembalikan user pertama yang ditemukan
     } catch (err) {
         throw new Error('Error fetching user: ' + err);
