@@ -5,7 +5,7 @@ const UserController = require('../controllers/userController');
 const AuthMiddleware = require('../middleware/authMiddleware')
 
 /* GET users listing. */
-router.get('/', AuthMiddleware.authenticateToken , UserController.fetchUsers);
+router.get('/', AuthMiddleware.authenticateToken, AuthMiddleware.authorizeRoles('admin'), UserController.fetchUsers);
 
 /* POST users listing. */
 router.post('/', UserController.addUser);
