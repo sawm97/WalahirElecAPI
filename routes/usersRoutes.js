@@ -7,7 +7,5 @@ const AuthMiddleware = require('../middleware/authMiddleware')
 /* GET users listing. */
 router.get('/', AuthMiddleware.authenticateToken, AuthMiddleware.authorizeRoles('admin'), UserController.fetchUsers);
 
-/* POST users listing. */
-router.post('/', UserController.addUser);
 
 module.exports = router;

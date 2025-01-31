@@ -26,17 +26,23 @@
         <p><strong>GET</strong> <code class="api-url" data-endpoint="/users"></code></p>
         <p>Mengambil daftar semua user.</p>
         <pre>
+            Response:
             {
-                "id": 1,
-                "username": "john_doe",
-                "email": "john@example.com",
-                "created_at": "2024-01-01T12:00:00Z"
+                "status": "success",
+                "data": [
+                    {
+                        "id": 1,
+                        "username": "john_doe",
+                        "email": "john@example.com",
+                        "created_at": "2024-01-01T12:00:00Z"
+                    }
+                ]
             }
         </pre>
 
-        <h3>2. Create User</h3>
-        <p><strong>POST</strong> <code class="api-url" data-endpoint="/users"></code></p>
-        <p>Membuat user baru.</p>
+        <h3>2. Register User</h3>
+        <p><strong>POST</strong> <code class="api-url" data-endpoint="/auth/register"></code></p>
+        <p>Mendaftarkan user baru.</p>
         <pre>
             Request Body:
             {
@@ -44,11 +50,11 @@
                 "email": "john@example.com",
                 "password": "123456"
             }
-
+            
             Response:
             {
-                "message": "User created successfully", 
-                "IsSuccess": true
+                "status": "success",
+                "message": "User berhasil didaftarkan"
             }
         </pre>
 
@@ -64,9 +70,9 @@
             
             Response:
             {
+                "status": "success",
                 "accessToken": "eyJhbGciOiJIUzI1NiIsInR...",
-                "refreshToken": "eyJhbGciOiJIUzI1NiIsInR...",
-                "IsValid": true
+                "refreshToken": "eyJhbGciOiJIUzI1NiIsInR..."
             }
         </pre>
 
@@ -81,6 +87,7 @@
             
             Response:
             {
+                "status": "success",
                 "accessToken": "eyJhbGciOiJIUzI1NiIsInR..."
             }
         </pre>
@@ -91,13 +98,14 @@
         <pre>
             Response:
             {
+                "status": "success",
                 "message": "Logout berhasil"
             }
         </pre>
     </section>
 
     <footer>
-        <p>&copy; 2025 API Documentation</p>
+        <p>&copy; 2024 API Documentation</p>
     </footer>
 </body>
 </html>
