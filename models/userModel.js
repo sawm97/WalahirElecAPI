@@ -41,26 +41,9 @@ async function getUserByIdentifier(identifier) {
     }
 }
 
-// UPDATE USER REFRESH TOKEN
-async function updateUserRefreshToken(userId, refreshToken) {
-    try {
-        const pool = await connectDB();
 
-        // Jika refreshToken = null, berarti user logout → Hapus refreshToken
-        await pool.request()
-            .input("userId", sql.Int, userId)
-            .input("refreshToken", sql.NVarChar, refreshToken) // Bisa null saat logout
-            .query(`
-                UPDATE users 
-                SET refresh_token = @refreshToken 
-                WHERE id = @userId
-            `);
-
-        return { success: true, message: "Refresh token updated successfully" };
-    } catch (error) {
-        console.error("Error updating refresh token:", error);
-        return { success: false, message: "Database error" };
-    }
-}
-
-module.exports = { getAllUsers, createUser, getUserByIdentifier };
+module.exports = { 
+    getAllUsers, 
+    createUser, 
+    getUserByIdentifier
+};
