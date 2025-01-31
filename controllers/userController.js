@@ -19,9 +19,9 @@ async function addUser(req, res) {
     try {
         const hashedPassword = password; // 🔴 Gantilah dengan bcrypt hash di implementasi nyata
         await createUser(username, email, hashedPassword, role);
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully', IsSuccess: true });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: err.message, IsSuccess: false });
     }
 }
 
