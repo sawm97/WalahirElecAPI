@@ -25,12 +25,12 @@ async function createUser(username, email, passwordHash, role,) {
     }
 }
 
-async function getUserByEmail(email) {
+async function getUserByIdentifier(identifier) {
     try {
         let pool = await connectDB();
         let result = await pool.request()
-            .input('email', sql.VarChar, email)
-            .query('SELECT id, username, email, password_hash, role FROM users WHERE email = @email');
+            .input('identifier', sql.VarChar, identifier)
+            .query('SELECT id, username, email, password_hash, role FROM users WHERE email = @identifier OR username = @identifier');
         return result.recordset[0]; // Mengembalikan user pertama yang ditemukan
     } catch (err) {
         throw new Error('Error fetching user: ' + err);
@@ -38,4 +38,4 @@ async function getUserByEmail(email) {
 }
 
 
-module.exports = { getAllUsers, createUser, getUserByEmail };
+module.exports = { getAllUsers, createUser, getUserByIdentifier };

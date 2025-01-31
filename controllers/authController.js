@@ -22,14 +22,14 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
 
-    if (!email || !password) {
+    if (!identifier || !password) {
         return res.status(400).json({ message: 'Email and password are required', IsValid: false });
     }
 
     try {
-        const user = await getUserByEmail(email);
+        const user = await getUserByIdentifier(identifier);
         if (!user) return res.status(401).json({ message: 'Invalid credentials', IsValid: false });
 
         const isMatch = await bcrypt.compare(password, user.password_hash);
