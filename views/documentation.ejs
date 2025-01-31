@@ -9,7 +9,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const baseUrl = window.location.origin;
             document.querySelectorAll('.api-url').forEach(el => {
-                el.textContent = `${baseUrl}${el.dataset.endpoint}`;
+                el.textContent = `${baseUrl}${el.getAttribute('data-endpoint')}`;
             });
         });
     </script>
@@ -22,72 +22,70 @@
     <section>
         <h2>Endpoints</h2>
 
-        <h3>1. Register User</h3>
-        <p><strong>POST</strong> <code class="api-url" data-endpoint="/auth/register"></code></p>
-        <p>Endpoint untuk mendaftarkan user baru.</p>
+        <h3>1. Get All Users</h3>
+        <p><strong>GET</strong> <code class="api-url" data-endpoint="/users"></code></p>
+        <p>Mengambil daftar semua user.</p>
+        <pre>
+            {
+                "id": 1,
+                "username": "john_doe",
+                "email": "john@example.com",
+                "created_at": "2024-01-01T12:00:00Z"
+            }
+        </pre>
+
+        <h3>2. Create User</h3>
+        <p><strong>POST</strong> <code class="api-url" data-endpoint="/users"></code></p>
+        <p>Membuat user baru.</p>
         <pre>
             Request Body:
             {
                 "username": "john_doe",
                 "email": "john@example.com",
-                "password": "123456",
-                "role": "user"
-            }
-        </pre>
-
-        <h3>2. Login User</h3>
-        <p><strong>POST</strong> <code class="api-url" data-endpoint="/auth/login"></code></p>
-        <p>Endpoint untuk login user dan mendapatkan access token.</p>
-        <pre>
-            Request Body:
-            {
-                "identifier": "john@example.com",
                 "password": "123456"
             }
         </pre>
-        <pre>
-            Response:
-            {
-                "accessToken": "your_access_token_here",
-                "refreshToken": "your_refresh_token_here"
-            }
-        </pre>
 
-        <h3>3. Refresh Token</h3>
-        <p><strong>POST</strong> <code class="api-url" data-endpoint="/auth/refresh-token"></code></p>
-        <p>Endpoint untuk mendapatkan access token baru menggunakan refresh token.</p>
+        <h3>3. Login</h3>
+        <p><strong>POST</strong> <code class="api-url" data-endpoint="/auth/login"></code></p>
+        <p>Autentikasi pengguna dan mengembalikan accessToken serta refreshToken.</p>
         <pre>
             Request Body:
             {
-                "token": "your_refresh_token_here"
+                "identifier": "john@example.com", // atau "john_doe"
+                "password": "123456"
             }
-        </pre>
-        <pre>
+            
             Response:
             {
-                "accessToken": "your_new_access_token_here"
+                "accessToken": "eyJhbGciOiJIUzI1NiIsInR...",
+                "refreshToken": "eyJhbGciOiJIUzI1NiIsInR..."
             }
         </pre>
 
-        <h3>4. Get All Users (Admin Only)</h3>
-        <p><strong>GET</strong> <code class="api-url" data-endpoint="/users"></code></p>
-        <p>Endpoint ini hanya bisa diakses oleh admin.</p>
+        <h3>4. Refresh Token</h3>
+        <p><strong>POST</strong> <code class="api-url" data-endpoint="/auth/refresh"></code></p>
+        <p>Mendapatkan accessToken baru menggunakan refreshToken yang valid.</p>
         <pre>
-            Headers:
+            Request Body:
             {
-                "Authorization": "Bearer your_access_token_here"
+                "token": "refreshToken"
+            }
+            
+            Response:
+            {
+                "accessToken": "eyJhbGciOiJIUzI1NiIsInR..."
             }
         </pre>
+
+        <h3>5. Logout</h3>
+        <p><strong>POST</strong> <code class="api-url" data-endpoint="/auth/logout"></code></p>
+        <p>Menghapus refreshToken dari database dan logout pengguna.</p>
         <pre>
             Response:
-            [
-                {
-                    "id": 1,
-                    "username": "admin123",
-                    "email": "admin@example.com",
-                    "role": "admin"
-                }
-            ]
+            {
+                "message": "Logout berhasil"
+            }
         </pre>
     </section>
 
