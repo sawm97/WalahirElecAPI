@@ -30,7 +30,7 @@ async function getUserByEmail(email) {
         let pool = await connectDB();
         let result = await pool.request()
             .input('email', sql.VarChar, email)
-            .query('SELECT * FROM users WHERE email = @email');
+            .query('SELECT id, username, email, password_hash, role FROM users WHERE email = @email');
         return result.recordset[0]; // Mengembalikan user pertama yang ditemukan
     } catch (err) {
         throw new Error('Error fetching user: ' + err);
