@@ -13,15 +13,27 @@ async function register(req, res) {
     const { username, email, password, role} = req.body;
 
     if (!username || !email || !password ) {
-        return res.status(400).json({ message: 'All fields are required' });
+        return res.status(400).json({ 
+            status: 'error', 
+            IsSuccess: false, 
+            message: 'All fields are required' 
+        });
     }
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10); // Hash password
         await createUser(username, email, hashedPassword, role || 'guest');
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ 
+            status: 'success', 
+            IsSuccess: true, 
+            message: 'User registered successfully' 
+        });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ 
+            status: 'error', 
+            IsSuccess: false, 
+            message: err.message 
+        });
     }
 }
 
@@ -31,15 +43,27 @@ async function login(req, res) {
     const { identifier, password } = req.body;
 
     if (!identifier || !password) {
-        return res.status(400).json({ message: 'Email and password are required', IsValid: false });
+        return res.status(400).json({ 
+            status: 'error',
+            IsValid: false,
+            message: 'Email and password are required' 
+        });
     }
 
     try {
         const user = await getUserByIdentifier(identifier);
-        if (!user) return res.status(401).json({ message: 'Invalid credentials', IsValid: false });
+        if (!user) return res.status(401).json({ 
+            status: 'error',
+            IsValid: false,
+            message: 'Invalid credentials' 
+        });
 
         const isMatch = await bcrypt.compare(password, user.password_hash);
-        if (!isMatch) return res.status(401).json({ message: 'Invalid credentials', IsValid: false });
+        if (!isMatch) return res.status(401).json({ 
+            status: 'error',
+            IsValid: false,
+            message: 'Invalid credentials' 
+        });
 
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
@@ -55,9 +79,18 @@ async function login(req, res) {
             sameSite: "Strict"
         });
 
-        res.json({ accessToken, refreshToken, IsValid: true });
+        res.json({ 
+            status: 'success', 
+            IsValid: true,
+            accessToken, 
+            refreshToken 
+        });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ 
+            status: 'error',
+            IsValid: false,
+            message: err.message 
+        });
     }
 }
 
@@ -88,9 +121,17 @@ async function logout(req, res) {
         await removeRefreshToken(refreshToken);
 
         res.clearCookie("refreshToken");
-        res.json({ message: "Logout berhasil" });
+        res.json({ 
+            status: 'success',
+            IsSuccess: true,
+            message: "Logout berhasil" 
+        });
     } catch (error) {
-        res.status(500).json({ message: "Error saat logout" });
+        res.status(500).json({ 
+            status: 'error',
+            IsSuccess: false,
+            message: "Error saat logout" 
+        });
     }
 }
 
@@ -98,20 +139,40 @@ async function logout(req, res) {
 //FUNGSI REFRESH TOKEN
 async function refreshToken(req, res) {
     const { token } = req.body;
-    if (!token) return res.status(401).json({ message: "Token diperlukan" });
+    if (!token) return res.status(401).json({ 
+        status: 'error',
+        IsSuccess: false,
+        message: "Token diperlukan" 
+    });
 
     try {
         const user = await findUserByRefreshToken(token);
-        if (!user) return res.status(403).json({ message: "Token tidak valid atau sudah logout" });
+        if (!user) return res.status(403).json({ 
+            status: 'error',
+            IsSuccess: false,
+            message: "Token tidak valid atau sudah logout" 
+        });
 
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-            if (err) return res.status(403).json({ message: "Token tidak valid" });
+            if (err) return res.status(403).json({ 
+                status: 'error',
+                IsSuccess: false,
+                message: "Token tidak valid" 
+            });
 
             const newAccessToken = generateAccessToken(user);
-            res.json({ accessToken: newAccessToken });
+            res.json({ 
+                status: 'success',
+                IsSuccess: true,
+                accessToken: newAccessToken 
+            });
         });
     } catch (error) {
-        res.status(500).json({ message: "Database error" });
+        res.status(500).json({ 
+            status: 'error',
+            IsSuccess: false,
+            message: "Database error" 
+        });
     }
 }
 
