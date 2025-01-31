@@ -36,8 +36,7 @@ async function login(req, res) {
         if (!isMatch) return res.status(401).json({ message: 'Invalid credentials', IsValid: false });
 
         const accessToken = generateAccessToken(user);
-        const refreshToken = jwt.sign({ id: user.id, role: user.role }, process.env.REFRESH_TOKEN_SECRET);
-        refreshTokens.push(refreshToken);
+        const refreshToken = generateRefreshToken(user);
 
         res.json({ accessToken, refreshToken, IsValid: true });
     } catch (err) {
@@ -46,7 +45,19 @@ async function login(req, res) {
 }
 
 function generateAccessToken(user) {
-    return jwt.sign({ id: user.id, username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '5m' });
+    return jwt.sign(
+        { id: user.id, username: user.username, role: user.role },
+        process.env.JWT_SECRET, 
+        { expiresIn: process.env.JWT_EXPIRY }
+    );
+}
+
+function generateRefreshToken(user) {
+    return jwt.sign(
+        { id: user.id, role: user.role }, 
+        process.env.REFRESH_TOKEN_SECRET, 
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY } // Misalnya: 7 hari
+    );
 }
 
 function refreshToken(req, res) {
