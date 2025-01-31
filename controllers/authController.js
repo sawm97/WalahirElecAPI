@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { createUser, getUserByIdentifier } = require('../models/userModel');
+const { getUserByIdentifier, createUser } = require('../models/userModel');
 const { storeRefreshToken, removeRefreshToken, findUserByRefreshToken } = require('../models/refreshTokenModel')
 
 require('dotenv').config();
@@ -176,4 +176,9 @@ async function refreshToken(req, res) {
     }
 }
 
-module.exports = { register, login, logout, refreshToken };
+module.exports = { 
+    register, 
+    login, 
+    logout, 
+    refreshToken 
+};

@@ -1,5 +1,21 @@
 const { connectDB, sql } = require('../config/databaseConfig');
 
+// CREATE USER
+async function createUser(username, email, passwordHash, role) {
+    try {
+        let pool = await connectDB();
+        let result = await pool.request()
+            .input('username', sql.VarChar, username)
+            .input('email', sql.VarChar, email)
+            .input('passwordHash', sql.VarChar, passwordHash)
+            .input('role', sql.VarChar, role)
+            .query('INSERT INTO users (username, email, password_hash, role) VALUES (@username, @email, @passwordHash, @role)');
+        return result;
+    } catch (err) {
+        throw new Error('Error creating user: ' + err);
+    }
+}
+
 // GET ALL USERS
 async function getAllUsers() {
     try {
@@ -29,5 +45,6 @@ async function getUserByIdentifier(identifier) {
 
 module.exports = { 
     getAllUsers, 
-    getUserByIdentifier
+    getUserByIdentifier,
+    createUser
 };
