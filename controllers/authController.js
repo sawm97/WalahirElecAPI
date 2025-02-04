@@ -84,7 +84,8 @@ async function login(req, res) {
             IsValid: true,
             accessToken, 
             refreshToken,
-            role: user.role 
+            role: user.role,
+            userId: user.id
         });
     } catch (err) {
         res.status(500).json({ 
