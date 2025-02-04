@@ -71,14 +71,6 @@ async function login(req, res) {
         // Simpan refreshToken di database
         await storeRefreshToken(user.id, refreshToken);
 
-        // const expiresMinute = process.env.REFRESH_TOKEN_EXPIRY / 1440;
-        // res.cookie("refreshToken", refreshToken, {
-        //     expires: expiresMinute,
-        //     httpOnly: true,
-        //     secure: true,
-        //     sameSite: "Strict"
-        // });
-
         res.json({ 
             status: 'success', 
             IsValid: true,
@@ -97,19 +89,35 @@ async function login(req, res) {
 }
 
 function generateAccessToken(user) {
-    return jwt.sign(
+    const jwtExpiry = process.env.JWT_EXPIRY || "3m"
+    const tokenJwt = jwt.sign(
         { id: user.id, username: user.username, role: user.role },
         process.env.JWT_SECRET, 
-        { expiresIn: process.env.JWT_EXPIRY }
+        { expiresIn: jwtExpiry }
     );
+
+    // Debug: Tampilkan waktu expiry dalam zona waktu lokal
+    const decoded = jwt.decode(tokenJwt);
+    console.log("Refresh Token Expiry (UTC):", new Date(decoded.exp * 1000));
+    console.log("Refresh Token Expiry (Local):", new Date(decoded.exp * 1000).toLocaleString());
+
+    return tokenJwt;
 }
 
 function generateRefreshToken(user) {
-    return jwt.sign(
+    const refreshExpiry = process.env.REFRESH_TOKEN_EXPIRY || "7m"
+    const tokenRefresh = jwt.sign(
         { id: user.id, role: user.role }, 
         process.env.REFRESH_TOKEN_SECRET, 
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY } // Misalnya: 7 hari
+        { expiresIn: refreshExpiry } // Misalnya: 7 hari
     );
+
+    // Debug: Tampilkan waktu expiry dalam zona waktu lokal
+    const decoded = jwt.decode(tokenRefresh);
+    console.log("Refresh Token Expiry (UTC):", new Date(decoded.exp * 1000));
+    console.log("Refresh Token Expiry (Local):", new Date(decoded.exp * 1000).toLocaleString());
+
+    return tokenRefresh;
 }
 
 
