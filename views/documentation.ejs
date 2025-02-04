@@ -109,6 +109,25 @@
                 "message": "Logout berhasil"
             }
         </pre>
+
+        <h3>6. Edit Profile</h3>
+        <p><strong>PUT</strong> <code class="api-url" data-endpoint="/users/edit-profile"></code></p>
+        <p>Memperbarui informasi profil pengguna.</p>
+        <pre>
+            Request Body:
+            {
+                "address": "Jl. Merdeka No. 123",
+                "phoneNumber": "08123456789",
+                "birthDate": "1990-05-15"
+            }
+            
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "message": "Profil berhasil diperbarui"
+            }
+        </pre>
     </section>
 
     <footer>
