@@ -85,9 +85,67 @@ async function getUserById(id) {
     }
 }
 
+// UPDATE USER (USERNAME & EMAIL)
+async function updateUser(userId, username, email) {
+    try {
+        let pool = await connectDB();
+        await pool.request()
+            .input('userId', sql.Int, userId)
+            .input('username', sql.VarChar, username)
+            .input('email', sql.VarChar, email)
+            .query(`
+                UPDATE Users 
+                SET username = @username, email = @email
+                WHERE id = @userId
+            `);
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return { success: false, message: "Database error" };
+    }
+}
+
+// GET USER PASSWORD HASH (Untuk Validasi)
+async function getUserPasswordHash(userId) {
+    try {
+        let pool = await connectDB();
+        let result = await pool.request()
+            .input('userId', sql.Int, userId)
+            .query(`SELECT password_hash FROM Users WHERE id = @userId`);
+        
+        return result.recordset.length ? result.recordset[0].password_hash : null;
+    } catch (error) {
+        console.error("Error fetching user password:", error);
+        return null;
+    }
+}
+
+// UPDATE PASSWORD
+async function updateUserPassword(userId, newPasswordHash) {
+    try {
+        let pool = await connectDB();
+        await pool.request()
+            .input('userId', sql.Int, userId)
+            .input('passwordHash', sql.VarChar, newPasswordHash)
+            .query(`
+                UPDATE Users 
+                SET password_hash = @passwordHash 
+                WHERE id = @userId
+            `);
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating password:", error);
+        return { success: false, message: "Database error" };
+    }
+}
+
+
 module.exports = { 
     getAllUsers, 
     getUserByUnameEmail,
     createUser,
-    getUserById
+    getUserById,
+    updateUser,
+    getUserPasswordHash,
+    updateUserPassword
 };

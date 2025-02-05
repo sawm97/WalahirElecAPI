@@ -8,10 +8,13 @@ const AuthMiddleware = require('../middleware/authMiddleware')
 router.get('/', AuthMiddleware.authenticateToken, AuthMiddleware.authorizeRoles('admin'), UserController.fetchUsers);
 
 /* GET user data */
-router.get('/:identifier', UserController.getUser);
+router.get('/:identifier', AuthMiddleware.authenticateToken, UserController.getUser);
 
 /* UPDATE user detail */
 router.put('/edit-profile', AuthMiddleware.authenticateToken, UserController.updateProfile);
+
+/* UPDATE user */
+router.put('/edit-user', AuthMiddleware.authenticateToken, UserController.updateUserProfile);
 
 
 module.exports = router;
