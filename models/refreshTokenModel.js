@@ -4,13 +4,21 @@ const { connectDB, sql } = require('../config/databaseConfig');
 async function storeRefreshToken(userId, refreshToken) {
     try {
         const pool = await connectDB();
+
+        // Hapus semua refresh token lama terkait userId
         await pool.request()
-            .input("userId", sql.Int, userId)
-            .input("refreshToken", sql.NVarChar, refreshToken)
-            .query(`
-                INSERT INTO Users_Token (user_id, refresh_token) 
-                VALUES (@userId, @refreshToken)
-            `);
+        .input("userId", sql.Int, userId)
+        .query(`DELETE FROM Users_Token WHERE user_id = @userId`);
+
+        // Simpan refresh token yang baru
+        await pool.request()
+        .input("userId", sql.Int, userId)
+        .input("refreshToken", sql.NVarChar, refreshToken)
+        .query(`
+            INSERT INTO Users_Token (user_id, refresh_token) 
+            VALUES (@userId, @refreshToken)
+        `);
+        
     } catch (error) {
         console.error("Error storing refresh token:", error);
     }
