@@ -58,7 +58,7 @@ async function login(req, res) {
             message: 'Invalid credentials' 
         });
 
-        const isMatch = await bcrypt.compare(password, user.data.password_hash);
+        const isMatch = await bcrypt.compare(password, user.password_hash);
         if (!isMatch) return res.status(401).json({ 
             status: 'error',
             IsValid: false,
@@ -69,15 +69,15 @@ async function login(req, res) {
         const refreshToken = generateRefreshToken(user);
 
         // Simpan refreshToken di database
-        await storeRefreshToken(user.data.id, refreshToken);
+        await storeRefreshToken(user.id, refreshToken);
 
         res.json({ 
             status: 'success', 
             IsValid: true,
             accessToken, 
             refreshToken,
-            role: user.data.role,
-            userId: user.data.id
+            role: user.role,
+            userId: user.id
         });
     } catch (err) {
         res.status(500).json({ 
@@ -91,7 +91,7 @@ async function login(req, res) {
 function generateAccessToken(user) {
     const jwtExpiry = process.env.JWT_EXPIRY || "3m"
     const tokenJwt = jwt.sign(
-        { id: user.data.id, username: user.data.username, role: user.data.role },
+        { id: user.id, username: user.username, role: user.role },
         process.env.JWT_SECRET, 
         { expiresIn: jwtExpiry }
     );
@@ -107,7 +107,7 @@ function generateAccessToken(user) {
 function generateRefreshToken(user) {
     const refreshExpiry = process.env.REFRESH_TOKEN_EXPIRY || "7m"
     const tokenRefresh = jwt.sign(
-        { id: user.data.id, role: user.data.role }, 
+        { id: user.id, role: user.role }, 
         process.env.REFRESH_TOKEN_SECRET, 
         { expiresIn: refreshExpiry } // Misalnya: 7 hari
     );
