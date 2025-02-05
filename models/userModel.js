@@ -33,9 +33,24 @@ async function getAllUsers() {
 async function getUserByIdentifier(identifier) {
     try {
         let pool = await connectDB();
+
         let result = await pool.request()
             .input('identifier', sql.VarChar, identifier)
-            .query('SELECT id, username, email, password_hash, role FROM Users WHERE email = @identifier OR username = @identifier');
+            .query(`
+                SELECT 
+                    u.id, 
+                    u.username, 
+                    u.email,
+                    u.password_hash, 
+                    u.role, 
+                    ud.address, 
+                    ud.phone_number, 
+                    ud.birth_date
+                FROM Users u
+                LEFT JOIN Users_Detail ud ON u.id = ud.user_id
+                WHERE u.email = @identifier OR u.username = @identifier OR u.id = @identifier
+            `);
+
         return result.recordset[0]; // Mengembalikan user pertama yang ditemukan
     } catch (err) {
         throw new Error('Error fetching user: ' + err);

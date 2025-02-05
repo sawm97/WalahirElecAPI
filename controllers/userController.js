@@ -1,4 +1,4 @@
-const { getAllUsers } = require('../models/userModel');
+const { getAllUsers, getUserByIdentifier } = require('../models/userModel');
 const { upsertUserDetail } = require('../models/userDetailModel');
 
 // GET USER
@@ -59,5 +59,33 @@ async function updateProfile(req, res) {
     }
 }
 
+// GET USER BY IDENTIFIER
+async function getUser(req, res) {
+    const { identifier } = req.params; // username atau email dari request parameter
 
-module.exports = { fetchUsers, updateProfile };
+    try {
+        const user = await getUserByIdentifier(identifier);
+        if (!user) {
+            return res.status(404).json({
+                status: 'error',
+                IsSuccess: false,
+                message: 'User tidak ditemukan'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            IsSuccess: true,
+            data: user
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            IsSuccess: false,
+            message: 'Terjadi kesalahan saat mengambil data user'
+        });
+    }
+}
+
+module.exports = { fetchUsers, updateProfile, getUser };
