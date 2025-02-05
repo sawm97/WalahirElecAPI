@@ -1,4 +1,4 @@
-const { getAllUsers, getUserByIdentifier } = require('../models/userModel');
+const { getAllUsers, getUserById } = require('../models/userModel');
 const { upsertUserDetail } = require('../models/userDetailModel');
 
 // GET USER
@@ -64,7 +64,7 @@ async function getUser(req, res) {
     const { identifier } = req.params; // username atau email dari request parameter
 
     try {
-        const user = await getUserByIdentifier(identifier);
+        const user = await getUserById(identifier);
         if (!user) {
             return res.status(404).json({
                 status: 'error',

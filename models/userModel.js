@@ -29,13 +29,13 @@ async function getAllUsers() {
 }
 
 
-// GET USER BY IDENTIFIER (USERNAME/EMAIL)
-async function getUserByIdentifier(identifier) {
+// GET USER BY USERNAME/EMAIL
+async function getUserByUnameEmail(uname_email) {
     try {
         let pool = await connectDB();
 
         let result = await pool.request()
-            .input('identifier', sql.VarChar, identifier)
+            .input('uname_email', sql.VarChar, uname_email)
             .query(`
                 SELECT 
                     u.id, 
@@ -48,7 +48,7 @@ async function getUserByIdentifier(identifier) {
                     ud.birth_date
                 FROM Users u
                 LEFT JOIN Users_Detail ud ON u.id = ud.user_id
-                WHERE u.email = @identifier OR u.username = @identifier OR u.id = @identifier
+                WHERE u.email = @uname_email OR u.username = @uname_email
             `);
 
         return result.recordset[0]; // Mengembalikan user pertama yang ditemukan
@@ -57,9 +57,37 @@ async function getUserByIdentifier(identifier) {
     }
 }
 
+// GET USER BY IDENTIFIER
+async function getUserById(id) {
+    try {
+        let pool = await connectDB();
+
+        let result = await pool.request()
+            .input('id', sql.Int, id)
+            .query(`
+                SELECT 
+                    u.id, 
+                    u.username, 
+                    u.email,
+                    u.password_hash, 
+                    u.role, 
+                    ud.address, 
+                    ud.phone_number, 
+                    ud.birth_date
+                FROM Users u
+                LEFT JOIN Users_Detail ud ON u.id = ud.user_id
+                WHERE u.id = @id 
+            `);
+
+        return result.recordset[0]; // Mengembalikan user pertama yang ditemukan
+    } catch (err) {
+        throw new Error('Error fetching user: ' + err);
+    }
+}
 
 module.exports = { 
     getAllUsers, 
-    getUserByIdentifier,
-    createUser
+    getUserByUnameEmail,
+    createUser,
+    getUserById
 };

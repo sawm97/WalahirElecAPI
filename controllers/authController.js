@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { getUserByIdentifier, createUser } = require('../models/userModel');
+const { getUserByUnameEmail, createUser } = require('../models/userModel');
 const { storeRefreshToken, removeRefreshToken, findUserByRefreshToken } = require('../models/refreshTokenModel')
 
 require('dotenv').config();
@@ -51,7 +51,7 @@ async function login(req, res) {
     }
 
     try {
-        const user = await getUserByIdentifier(identifier);
+        const user = await getUserByUnameEmail(identifier);
         if (!user) return res.status(401).json({ 
             status: 'error',
             IsValid: false,
