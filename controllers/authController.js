@@ -98,8 +98,8 @@ function generateAccessToken(user) {
 
     // Debug: Tampilkan waktu expiry dalam zona waktu lokal
     const decoded = jwt.decode(tokenJwt);
-    console.log("Refresh Token Expiry (UTC):", new Date(decoded.exp * 1000));
-    console.log("Refresh Token Expiry (Local):", new Date(decoded.exp * 1000).toLocaleString());
+    console.log("JWT Token Expiry (UTC):", new Date(decoded.exp * 1000));
+    console.log("JWT Token Expiry (Local):", new Date(decoded.exp * 1000).toLocaleString());
 
     return tokenJwt;
 }
