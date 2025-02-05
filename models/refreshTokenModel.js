@@ -56,6 +56,7 @@ async function updateUserRefreshToken(userId, refreshToken) {
 // REFRESH ACCESS TOKEN
 async function findUserByRefreshToken(refreshToken) {
     try {
+        console.log("Searching for Refresh Token:", refreshToken); // Debugging
         const pool = await connectDB();
         const result = await pool.request()
             .input("refreshToken", sql.NVarChar, refreshToken)
@@ -65,6 +66,8 @@ async function findUserByRefreshToken(refreshToken) {
                 INNER JOIN Users_Token ON users.id = Users_Token.user_id
                 WHERE Users_Token.refresh_token = @refreshToken
             `);
+
+        console.log("Query Result:", result.recordset); // Debugging
         
         return result.recordset.length ? result.recordset[0] : null;
     } catch (error) {

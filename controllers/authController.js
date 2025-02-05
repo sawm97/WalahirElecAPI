@@ -149,6 +149,7 @@ async function logout(req, res) {
 //FUNGSI REFRESH TOKEN
 async function refreshToken(req, res) {
     const { token } = req.body;
+    console.log("Received Refresh Token:", token); // Debugging
     if (!token) return res.status(401).json({ 
         status: 'error',
         IsSuccess: false,
@@ -157,6 +158,7 @@ async function refreshToken(req, res) {
 
     try {
         const user = await findUserByRefreshToken(token);
+        console.log("User Found:", user); // Debugging
         if (!user) return res.status(403).json({ 
             status: 'error',
             IsSuccess: false,
@@ -164,11 +166,16 @@ async function refreshToken(req, res) {
         });
 
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-            if (err) return res.status(403).json({ 
-                status: 'error',
-                IsSuccess: false,
-                message: "Token tidak valid" 
-            });
+            if (err) {
+                console.error("JWT Verify Error:", err); // Debugging
+                return res.status(403).json({ 
+                    status: 'error',
+                    IsSuccess: false,
+                    message: "Token tidak valid" 
+                });
+            }
+
+            console.log("Decoded Token:", decoded); // Debugging
 
             const newAccessToken = generateAccessToken(user);
             res.json({ 
@@ -178,6 +185,7 @@ async function refreshToken(req, res) {
             });
         });
     } catch (error) {
+        console.error("Error in refreshToken function:", error); // Debugging
         res.status(500).json({ 
             status: 'error',
             IsSuccess: false,
