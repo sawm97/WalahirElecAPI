@@ -90,8 +90,14 @@ async function getUser(req, res) {
 
 // UPDATE USER
 async function updateUserProfile(req, res) {
-    const { userId } = req.user; // ID dari token JWT
+    const { userId } = req.user.id; // ID dari token JWT
     const { username, email, oldPassword, newPassword } = req.body;
+
+    if (!userId) {
+        return res.status(400).json({ message: "User ID tidak ditemukan di token" });
+    } else {
+        console.log("User ID dari token:", req.user.id);
+    }
 
     try {
         // Cek apakah username & email diupdate
