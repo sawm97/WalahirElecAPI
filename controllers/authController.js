@@ -89,7 +89,7 @@ async function login(req, res) {
 }
 
 function generateAccessToken(user) {
-    const jwtExpiry = process.env.JWT_EXPIRY || "3m"
+    const jwtExpiry = process.env.JWT_EXPIRY || "15m"
     const tokenJwt = jwt.sign(
         { id: user.id, username: user.username, role: user.role },
         process.env.JWT_SECRET, 
@@ -105,7 +105,7 @@ function generateAccessToken(user) {
 }
 
 function generateRefreshToken(user) {
-    const refreshExpiry = process.env.REFRESH_TOKEN_EXPIRY || "7m"
+    const refreshExpiry = process.env.REFRESH_TOKEN_EXPIRY || "30m"
     const tokenRefresh = jwt.sign(
         { id: user.id, role: user.role }, 
         process.env.REFRESH_TOKEN_SECRET, 
