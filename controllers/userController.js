@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { getAllUsers, getUserById, updateUser, getUserPasswordHash, updateUserPassword } = require('../models/userModel');
 const { upsertUserDetail } = require('../models/userDetailModel');
 
