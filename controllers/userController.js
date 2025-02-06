@@ -90,7 +90,7 @@ async function getUser(req, res) {
 
 // UPDATE USER
 async function updateUserProfile(req, res) {
-    const { userId } = req.user.id; // ID dari token JWT
+    const userId = req.user.id; // ID dari token JWT
     const { username, email, oldPassword, newPassword } = req.body;
 
     if (!userId) {
