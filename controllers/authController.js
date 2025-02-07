@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { getUserByUnameEmail, createUser } = require('../models/userModel');
+const { getUserByUnameEmail, createUser, storeUserSASToken } = require('../models/userModel');
 const { storeRefreshToken, removeRefreshToken, findUserByRefreshToken } = require('../models/refreshTokenModel')
+const { generateUserSASToken } = require('../helpers/azureBlobHelper');``
 
 require('dotenv').config();
 
@@ -71,11 +72,18 @@ async function login(req, res) {
         // Simpan refreshToken di database
         await storeRefreshToken(user.id, refreshToken);
 
+        // Buat SAS Token untuk user ini
+        const sasToken = generateUserSASToken(user.id);
+
+        // Simpan SAS Token ke database (opsional)
+        await storeUserSASToken(user.id, sasToken);
+
         res.json({ 
             status: 'success', 
             IsValid: true,
             accessToken, 
             refreshToken,
+            sasToken,
             role: user.role,
             userId: user.id
         });
