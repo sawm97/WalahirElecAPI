@@ -167,7 +167,11 @@ async function updateUserProfile(req, res) {
 async function uploadProfilePicture(req, res) {
     try {
         if (!req.file) {
-            return res.status(400).json({ status: 'error', message: 'File tidak ditemukan' });
+            return res.status(400).json({ 
+                status: 'error',
+                IsSuccess: false, 
+                message: 'File tidak ditemukan' 
+            });
         }
 
         const fileBuffer = req.file.buffer;
@@ -181,9 +185,17 @@ async function uploadProfilePicture(req, res) {
         await saveUserImage(userId, imageUrl);
 
         // Simpan URL gambar ke database jika diperlukan
-        res.status(200).json({ status: 'success', imageUrl });
+        res.status(200).json({ 
+            status: 'success', 
+            IsSuccess: true, 
+            imageUrl 
+        });
     } catch (error) {
-        res.status(500).json({ status: 'error', message: 'Gagal mengunggah gambar' });
+        res.status(500).json({ 
+            status: 'error',
+            IsSuccess: false, 
+            message: 'Gagal mengunggah gambar' 
+        });
     }
 }
 

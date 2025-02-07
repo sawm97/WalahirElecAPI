@@ -157,6 +157,26 @@ async function saveUserImage(userId, imageUrl) {
     }
 }
 
+// SAVE USER SAS TOKEN
+async function storeUserSASToken(userId, sasToken, expiresAt) {
+    try {
+        const pool = await connectDB();
+        await pool.request()
+            .input('userId', sql.Int, userId)
+            .input('sasToken', sql.NVarChar, sasToken)
+            .input('expiresAt', sql.DateTime, expiresAt)
+            .query(`
+                DELETE FROM Users_SAS_Token WHERE user_id = @userId;
+                INSERT INTO Users_SAS_Token (user_id, sas_token, expires_at)
+                VALUES (@userId, @sasToken, @expiresAt);
+            `);
+    } catch (error) {
+        console.error("Error storing SAS Token:", error);
+        throw error;
+    }
+}
+
+
 module.exports = { 
     getAllUsers, 
     getUserByUnameEmail,
@@ -165,5 +185,6 @@ module.exports = {
     updateUser,
     getUserPasswordHash,
     updateUserPassword,
-    saveUserImage
+    saveUserImage,
+    storeUserSASToken
 };
