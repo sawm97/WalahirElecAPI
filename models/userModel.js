@@ -159,9 +159,14 @@ async function saveUserImage(userId, imageUrl) {
 
 // SAVE USER SAS TOKEN
 async function storeUserSASToken(userId, sasToken, expiresAt) {
+    const pool = await connectDB();
+    const transaction = new sql.Transaction(pool);
+
     try {
-        const pool = await connectDB();
-        await pool.request()
+        await transaction.begin();
+
+        const request = new sql.Request(transaction);
+        await request
             .input('userId', sql.Int, userId)
             .input('sasToken', sql.NVarChar, sasToken)
             .input('expiresAt', sql.DateTime, expiresAt)
@@ -170,11 +175,21 @@ async function storeUserSASToken(userId, sasToken, expiresAt) {
                 INSERT INTO Users_SAS_Token (user_id, sas_token, expires_at)
                 VALUES (@userId, @sasToken, @expiresAt);
             `);
+
+        await transaction.commit();
     } catch (error) {
         console.error("Error storing SAS Token:", error);
+        // Rollback transaksi jika terjadi error
+        if (transaction._aborted !== true) {
+            await transaction.rollback();
+        }
         throw error;
+    } finally {
+        // Pastikan koneksi tertutup
+        pool.close();
     }
 }
+
 
 
 module.exports = { 
