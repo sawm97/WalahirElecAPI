@@ -157,6 +157,25 @@ async function saveUserImage(userId, imageUrl) {
     }
 }
 
+// GET USER IMAGE
+async function getUserImageById(userId) {
+    try {
+        const pool = await connectDB();
+        const result = await pool.request()
+            .input('userId', sql.Int, userId)
+            .query(`
+                SELECT image_url 
+                FROM Users_Image 
+                WHERE user_id = @userId
+            `);
+
+        return result.recordset.length ? result.recordset[0].image_url : null;
+    } catch (error) {
+        console.error("Error fetching user image:", error);
+        throw error;
+    }
+}
+
 // SAVE USER SAS TOKEN
 async function storeUserSASToken(userId, sasToken, expiresAt) {
     const pool = await connectDB();
@@ -201,5 +220,6 @@ module.exports = {
     getUserPasswordHash,
     updateUserPassword,
     saveUserImage,
+    getUserImageById,
     storeUserSASToken
 };

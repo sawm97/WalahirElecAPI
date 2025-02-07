@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
-const { getAllUsers, getUserById, updateUser, getUserPasswordHash, updateUserPassword, saveUserImage } = require('../models/userModel');
+const { getAllUsers, getUserById, updateUser, getUserPasswordHash, updateUserPassword, saveUserImage, getUserImageById } = require('../models/userModel');
 const { upsertUserDetail } = require('../models/userDetailModel');
 const { uploadToAzureBlob } = require('../helpers/azureBlobHelper');
+const { get } = require('../routes/usersRoutes');
 
 // GET USER
 async function fetchUsers(req, res) {
@@ -199,4 +200,40 @@ async function uploadProfilePicture(req, res) {
     }
 }
 
-module.exports = { fetchUsers, updateProfile, getUser, updateUserProfile, uploadProfilePicture };
+// GET USER IMAGE
+async function getUserImage(req, res) {
+    try {
+        const userId = req.user.id; // Ambil userId dari token JWT
+
+        const imageUrl = await getUserImageById(userId);
+        if (!imageUrl) {
+            return res.status(404).json({ 
+                status: 'error',
+                IsSuccess: false,  
+                message: 'Image not found' 
+            });
+        }
+
+        res.status(200).json({ 
+            status: 'success', 
+            IsSuccess: true, 
+            image_url: imageUrl 
+        });
+    } catch (error) {
+        console.error("Error getting user image:", error);
+        res.status(500).json({ 
+            status: 'error',
+            IsSuccess: false,  
+            message: 'Server error' 
+        });
+    }
+}
+
+module.exports = { 
+    fetchUsers, 
+    updateProfile, 
+    getUser, 
+    updateUserProfile, 
+    uploadProfilePicture, 
+    getUserImage 
+};
