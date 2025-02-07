@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 const UserController = require('../controllers/userController');
-const AuthMiddleware = require('../middleware/authMiddleware')
+const AuthMiddleware = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
 /* GET users listing. */
 router.get('/', AuthMiddleware.authenticateToken, AuthMiddleware.authorizeRoles('admin'), UserController.fetchUsers);
