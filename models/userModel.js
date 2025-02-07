@@ -139,6 +139,23 @@ async function updateUserPassword(userId, newPasswordHash) {
     }
 }
 
+// SAVE USER IMAGE
+async function saveUserImage(userId, imageUrl) {
+    try {
+        const pool = await connectDB();
+        await pool.request()
+            .input('userId', sql.Int, userId)
+            .input('imageUrl', sql.NVarChar, imageUrl)
+            .input('uploadedAt', sql.DateTime, new Date())
+            .query(`
+                INSERT INTO Users_Image (user_id, image_url, uploaded_at)
+                VALUES (@userId, @imageUrl, @uploadedAt)
+            `);
+    } catch (error) {
+        console.error('Error saving image URL to database:', error);
+        throw error;
+    }
+}
 
 module.exports = { 
     getAllUsers, 
@@ -147,5 +164,6 @@ module.exports = {
     getUserById,
     updateUser,
     getUserPasswordHash,
-    updateUserPassword
+    updateUserPassword,
+    saveUserImage
 };

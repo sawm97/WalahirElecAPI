@@ -16,5 +16,8 @@ router.put('/edit-profile', AuthMiddleware.authenticateToken, UserController.upd
 /* UPDATE user */
 router.put('/edit-user', AuthMiddleware.authenticateToken, UserController.updateUserProfile);
 
+/* UPDATE user profile picture */
+router.post('/edit-profpic', AuthMiddleware.authenticateToken, upload.single('profilePicture'), UserController.uploadProfilePicture);
+
 
 module.exports = router;

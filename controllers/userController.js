@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
-const { getAllUsers, getUserById, updateUser, getUserPasswordHash, updateUserPassword } = require('../models/userModel');
+const { getAllUsers, getUserById, updateUser, getUserPasswordHash, updateUserPassword, saveUserImage } = require('../models/userModel');
 const { upsertUserDetail } = require('../models/userDetailModel');
+const { uploadToAzureBlob } = require('../helpers/azureBlobHelper');
 
 // GET USER
 async function fetchUsers(req, res) {
@@ -162,4 +163,28 @@ async function updateUserProfile(req, res) {
     }
 }
 
-module.exports = { fetchUsers, updateProfile, getUser, updateUserProfile };
+// UPLOAD PROFILE PICTURE
+async function uploadProfilePicture(req, res) {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ status: 'error', message: 'File tidak ditemukan' });
+        }
+
+        const fileBuffer = req.file.buffer;
+        const fileName = `${Date.now()}-${req.file.originalname}`;
+        const mimeType = req.file.mimetype;
+
+        const imageUrl = await uploadToAzureBlob(fileBuffer, fileName, mimeType);
+
+        // Menyimpan URL gambar ke database
+        const userId = req.user.id; // Pastikan user sudah terautentikasi
+        await saveUserImage(userId, imageUrl);
+
+        // Simpan URL gambar ke database jika diperlukan
+        res.status(200).json({ status: 'success', imageUrl });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: 'Gagal mengunggah gambar' });
+    }
+}
+
+module.exports = { fetchUsers, updateProfile, getUser, updateUserProfile, uploadProfilePicture };
