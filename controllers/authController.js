@@ -73,10 +73,10 @@ async function login(req, res) {
         await storeRefreshToken(user.id, refreshToken);
 
         // Buat SAS Token untuk user ini
-        const sasToken = generateUserSASToken(user.id);
+        const { sasToken, expiresAt } = generateUserSASToken(user.id);
 
         // Simpan SAS Token ke database (opsional)
-        await storeUserSASToken(user.id, sasToken);
+        await storeUserSASToken(user.id, sasToken, expiresAt);
 
         res.json({ 
             status: 'success', 
