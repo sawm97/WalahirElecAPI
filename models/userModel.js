@@ -148,8 +148,14 @@ async function saveUserImage(userId, imageUrl) {
             .input('imageUrl', sql.NVarChar, imageUrl)
             .input('uploadedAt', sql.DateTime, new Date())
             .query(`
-                INSERT INTO Users_Image (user_id, image_url, uploaded_at)
-                VALUES (@userId, @imageUrl, @uploadedAt)
+                MERGE INTO Users_Image AS target
+                USING (SELECT @userId AS user_id) AS source
+                ON target.user_id = source.user_id
+                WHEN MATCHED THEN
+                    UPDATE SET image_url = @imageUrl, uploaded_at = @uploadedAt
+                WHEN NOT MATCHED THEN
+                    INSERT (user_id, image_url, uploaded_at)
+                    VALUES (@userId, @imageUrl, @uploadedAt);
             `);
     } catch (error) {
         console.error('Error saving image URL to database:', error);
