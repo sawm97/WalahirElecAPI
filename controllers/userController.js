@@ -201,7 +201,7 @@ async function uploadProfilePicture(req, res) {
 }
 
 // GET USER IMAGE
-async function getUserImage(req, res) {
+async function viewImage(req, res) {
     try {
 
         console.log("getUserImage - User ID from token:", req.user.id);
@@ -237,5 +237,5 @@ module.exports = {
     getUser, 
     updateUserProfile, 
     uploadProfilePicture, 
-    getUserImage 
+    viewImage 
 };
