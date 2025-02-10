@@ -21,6 +21,6 @@ router.put('/edit-user', AuthMiddleware.authenticateToken, UserController.update
 router.post('/edit-profpic', AuthMiddleware.authenticateToken, upload.single('profilePicture'), UserController.uploadProfilePicture);
 
 /* GET user profile picture */
-router.get('/get-profpic', AuthMiddleware.authenticateToken, UserController.viewImage);
+router.post('/get-profpic', AuthMiddleware.authenticateToken, UserController.viewImage);
 
 module.exports = router;
