@@ -166,7 +166,10 @@ async function saveUserImage(userId, imageUrl) {
 // GET USER IMAGE
 async function getUserImageById(userId) {
     try {
+        console.log("Connecting to database...");
         const pool = await connectDB();
+        console.log("Connected to database. Fetching user image...");
+
         const result = await pool.request()
             .input('userId', sql.Int, userId)
             .query(`
@@ -175,6 +178,7 @@ async function getUserImageById(userId) {
                 WHERE user_id = @userId
             `);
 
+        console.log("Query executed. Processing result...");
         return result.recordset.length ? result.recordset[0].image_url : null;
     } catch (error) {
         console.error("Error fetching user image:", error);

@@ -208,6 +208,7 @@ async function viewImage(req, res) {
 
         const imageUrl = await getUserImageById(userId);
         if (!imageUrl) {
+            console.log("Image not found for user ID:", userId); // Tambahkan log ini
             return res.status(404).json({ 
                 status: 'error',
                 IsSuccess: false,  
@@ -215,6 +216,7 @@ async function viewImage(req, res) {
             });
         }
 
+        console.log("Image URL found:", imageUrl); // Tambahkan log ini
         res.status(200).json({ 
             status: 'success', 
             IsSuccess: true, 
