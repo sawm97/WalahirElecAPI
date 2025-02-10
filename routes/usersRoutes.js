@@ -9,7 +9,7 @@ const upload = require('../middleware/uploadMiddleware');
 router.get('/', AuthMiddleware.authenticateToken, AuthMiddleware.authorizeRoles('admin'), UserController.fetchUsers);
 
 /* GET user data */
-router.get('/:identifier', AuthMiddleware.authenticateToken, UserController.getUser);
+router.get('/data/:identifier', AuthMiddleware.authenticateToken, UserController.getUser);
 
 /* UPDATE user detail */
 router.put('/edit-profile', AuthMiddleware.authenticateToken, UserController.updateProfile);
@@ -21,6 +21,6 @@ router.put('/edit-user', AuthMiddleware.authenticateToken, UserController.update
 router.post('/edit-profpic', AuthMiddleware.authenticateToken, upload.single('profilePicture'), UserController.uploadProfilePicture);
 
 /* GET user profile picture */
-router.post('/get-profpic', AuthMiddleware.authenticateToken, UserController.viewImage);
+router.get('/get-profpic', AuthMiddleware.authenticateToken, UserController.viewImage);
 
 module.exports = router;
