@@ -203,8 +203,7 @@ async function uploadProfilePicture(req, res) {
 // GET USER IMAGE
 async function viewImage(req, res) {
     try {
-
-        console.log("getUserImage - User ID from token:", req.user.id);
+        console.log("viewImage - User ID from token:", req.user.id); // Tambahkan log ini
         const userId = req.user.id; // Ambil userId dari token JWT
 
         const imageUrl = await getUserImageById(userId);
