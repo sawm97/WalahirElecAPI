@@ -5,9 +5,9 @@ const CategoryModel = require('../models/categoryModel');
 async function fetchCategories(req, res) {
     try {
         const categories = await CategoryModel.getAllCategories();
-        res.status(200).json({ status: 'success', data: categories });
+        res.status(200).json({ status: 'success', IsSuccess: true, data: categories });
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ status: 'error', IsSuccess: false, message: error.message });
     }
 }
 
@@ -18,11 +18,11 @@ async function fetchCategoryById(req, res) {
     try {
         const category = await CategoryModel.getCategoryById(id);
         if (!category) {
-            return res.status(404).json({ status: 'error', message: 'Category not found' });
+            return res.status(404).json({ status: 'error', IsSuccess: false, message: 'Category not found' });
         }
-        res.status(200).json({ status: 'success', data: category });
+        res.status(200).json({ status: 'success', IsSuccess: true, data: category });
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ status: 'error', IsSuccess: false, message: error.message });
     }
 }
 
@@ -32,17 +32,17 @@ async function createCategory(req, res) {
 
     try {
         if (!name) {
-            return res.status(400).json({ status: 'error', message: 'Category name cannot be empty' });
+            return res.status(400).json({ status: 'error', IsSuccess: false, message: 'Category name cannot be empty' });
         }
 
         const success = await CategoryModel.createCategory(name);
         if (success) {
-            res.status(201).json({ status: 'success', message: 'Category created successfully' });
+            res.status(201).json({ status: 'success', IsSuccess: true, message: 'Category created successfully' });
         } else {
-            res.status(500).json({ status: 'error', message: 'Failed to create category' });
+            res.status(500).json({ status: 'error', IsSuccess: false, message: 'Failed to create category' });
         }
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ status: 'error', IsSuccess: false, message: error.message });
     }
 }
 
@@ -53,17 +53,17 @@ async function updateCategory(req, res) {
 
     try {
         if (!name) {
-            return res.status(400).json({ status: 'error', message: 'Category name cannot be empty' });
+            return res.status(400).json({ status: 'error', IsSuccess: false, message: 'Category name cannot be empty' });
         }
 
         const success = await CategoryModel.updateCategory(id, name);
         if (success) {
-            res.status(200).json({ status: 'success', message: 'Category updated successfully' });
+            res.status(200).json({ status: 'success', IsSuccess: true, message: 'Category updated successfully' });
         } else {
-            res.status(404).json({ status: 'error', message: 'Category not found' });
+            res.status(404).json({ status: 'error', IsSuccess: false, message: 'Category not found' });
         }
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ status: 'error', IsSuccess: false, message: error.message });
     }
 }
 
@@ -74,12 +74,12 @@ async function deleteCategory(req, res) {
     try {
         const success = await CategoryModel.deleteCategory(id);
         if (success) {
-            res.status(200).json({ status: 'success', message: 'Category deleted successfully' });
+            res.status(200).json({ status: 'success', IsSuccess: true, message: 'Category deleted successfully' });
         } else {
-            res.status(404).json({ status: 'error', message: 'Category not found' });
+            res.status(404).json({ status: 'error', IsSuccess: false, message: 'Category not found' });
         }
     } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
+        res.status(500).json({ status: 'error', IsSuccess: false, message: error.message });
     }
 }
 
