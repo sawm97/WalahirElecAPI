@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/indexRoutes');
 var usersRouter = require('./routes/usersRoutes');
+var categoryRoteur = require('./routes/categoryRoutes');
 var authRouter = require('./routes/authRoutes')
 var documentationRouter = require('./routes/documentationRoutes');
 
@@ -29,6 +30,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/documentation', documentationRouter);
+
+// FOR API
+app.use('/api', categoryRoteur);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
