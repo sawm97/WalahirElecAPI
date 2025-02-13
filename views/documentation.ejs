@@ -149,6 +149,121 @@
                 }
             }
         </pre>
+
+        <h3>8. Update User</h3>
+        <p><strong>PUT</strong> <code class="api-url" data-endpoint="/users/edit-user"></code></p>
+        <p>Memperbarui username, email, atau password pengguna.</p>
+        <pre>
+            Request Body:
+            {
+                "username": "john_doe",
+                "email": "john@example.com",
+                "oldPassword": "123456",
+                "newPassword": "newpassword123"
+            }
+            
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "message": "Profile berhasil diperbarui"
+            }
+        </pre>
+
+        <h3>9. Upload Profile Picture</h3>
+        <p><strong>POST</strong> <code class="api-url" data-endpoint="/users/edit-profpic"></code></p>
+        <p>Mengunggah gambar profil pengguna.</p>
+        <pre>
+            Request Body:
+            {
+                "profilePicture": "file"
+            }
+            
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "imageUrl": "https://example.com/path/to/image.jpg"
+            }
+        </pre>
+
+        <h3>10. Get User Profile Picture</h3>
+        <p><strong>GET</strong> <code class="api-url" data-endpoint="/users/profpic"></code></p>
+        <p>Mengambil URL gambar profil pengguna.</p>
+        <pre>
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "image_url": "https://example.com/path/to/image.jpg"
+            }
+        </pre>
+
+        <h3>11. Get All Categories</h3>
+        <p><strong>GET</strong> <code class="api-url" data-endpoint="/categories"></code></p>
+        <p>Mengambil daftar semua kategori.</p>
+        <pre>
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "data": [
+                    {
+                        "id": 1,
+                        "name": "Electronics",
+                        "description": "Devices and gadgets"
+                    }
+                ]
+            }
+        </pre>
+
+        <h3>12. Create Category</h3>
+        <p><strong>POST</strong> <code class="api-url" data-endpoint="/categories"></code></p>
+        <p>Membuat kategori baru.</p>
+        <pre>
+            Request Body:
+            {
+                "name": "Electronics",
+                "description": "Devices and gadgets"
+            }
+            
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "message": "Category berhasil dibuat"
+            }
+        </pre>
+
+        <h3>13. Update Category</h3>
+        <p><strong>PUT</strong> <code class="api-url" data-endpoint="/categories/:id"></code></p>
+        <p>Memperbarui kategori berdasarkan ID.</p>
+        <pre>
+            Request Body:
+            {
+                "name": "Updated Electronics",
+                "description": "Updated description"
+            }
+            
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "message": "Category berhasil diperbarui"
+            }
+        </pre>
+
+        <h3>14. Delete Category</h3>
+        <p><strong>DELETE</strong> <code class="api-url" data-endpoint="/categories/:id"></code></p>
+        <p>Menghapus kategori berdasarkan ID.</p>
+        <pre>
+            Response:
+            {
+                "status": "success",
+                "IsSuccess": true,
+                "message": "Category berhasil dihapus"
+            }
+        </pre>
     </section>
 
     <footer>
