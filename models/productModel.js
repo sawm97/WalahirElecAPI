@@ -1,5 +1,5 @@
 // productModel.js
-const { connectDB } = require('../config/db');
+const { connectDB } = require('../config/databaseConfig');
 const sql = require('mssql');
 
 // GET ALL PRODUCTS
