@@ -55,7 +55,7 @@ async function getProduct(req, res) {
 // CREATE PRODUCT
 async function addProduct(req, res) {
     try {
-        const { name, stock, price, category_id, desc } = req.body;
+        const { name, stock, price, category_id, description } = req.body;
 
         if (!name) {
             return res.status(400).json({
@@ -66,7 +66,7 @@ async function addProduct(req, res) {
         }
 
         const success = await createProduct({
-            name, stock, price, category_id, desc
+            name, stock, price, category_id, description
         });
 
         res.status(success ? 201 : 400).json({
@@ -87,7 +87,7 @@ async function addProduct(req, res) {
 async function editProduct(req, res) {
     try {
         const { id } = req.params;
-        const { name, stock, price, category_id, desc } = req.body;
+        const { name, stock, price, category_id, description } = req.body;
 
         if (!name) {
             return res.status(400).json({
@@ -98,7 +98,7 @@ async function editProduct(req, res) {
         }
 
         const success = await updateProduct(id, {
-            name, stock, price, category_id, desc
+            name, stock, price, category_id, description
         });
 
         res.status(success ? 200 : 404).json({
