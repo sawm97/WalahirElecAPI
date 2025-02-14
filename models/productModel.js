@@ -5,7 +5,16 @@ const sql = require('mssql');
 // GET ALL PRODUCTS
 async function getAllProducts() {
     const pool = await connectDB();
-    const result = await pool.request().query('SELECT * FROM Product');
+    const result = await pool.request()
+        .query(`
+            SELECT 
+                p.*,
+                c.name AS category_name 
+            FROM 
+                Product p
+            JOIN
+                Category c ON p.category_id = c.id
+        `);
     return result.recordset;
 }
 
@@ -14,7 +23,17 @@ async function getProductById(id) {
     const pool = await connectDB();
     const result = await pool.request()
         .input('id', sql.Int, id)
-        .query('SELECT * FROM Product WHERE id = @id');
+        .query(`
+            SELECT 
+                p.*, 
+                c.name AS category_name 
+            FROM 
+                Product p
+            JOIN 
+                Category c ON p.category_id = c.id
+            WHERE 
+                p.id = @id
+        `);
     return result.recordset[0];
 }
 
