@@ -37,7 +37,7 @@ async function createProduct({ name, stock, price, category_id, desc }) {
 }
 
 // UPDATE PRODUCT
-async function updateProduct(id, { name, stock, price, category_id, desc, image_url }) {
+async function updateProduct(id, { name, stock, price, category_id, desc }) {
     const pool = await connectDB();
     const result = await pool.request()
         .input('id', sql.Int, id)
