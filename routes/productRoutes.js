@@ -10,10 +10,10 @@ router.get('/', ProductController.fetchProducts);
 router.get('/:id', ProductController.getProduct);
 
 // CREATE PRODUCT
-router.post('/', upload.single('image'), ProductController.addProduct);
+router.post('/', ProductController.addProduct);
 
 // UPDATE PRODUCT
-router.put('/:id', upload.single('image'), ProductController.editProduct);
+router.put('/:id', ProductController.editProduct);
 
 // DELETE PRODUCT
 router.delete('/:id', ProductController.removeProduct);

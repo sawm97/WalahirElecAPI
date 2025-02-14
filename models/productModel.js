@@ -19,7 +19,7 @@ async function getProductById(id) {
 }
 
 // CREATE PRODUCT
-async function createProduct({ name, stock, price, category_id, desc, image_url }) {
+async function createProduct({ name, stock, price, category_id, desc }) {
     if (!name) throw new Error('Product name cannot be empty');
     
     const pool = await connectDB();
@@ -29,10 +29,9 @@ async function createProduct({ name, stock, price, category_id, desc, image_url 
         .input('price', sql.Int, price)
         .input('category_id', sql.Int, category_id)
         .input('desc', sql.NVarChar, desc)
-        .input('image_url', sql.NVarChar, image_url)
         .query(`
-            INSERT INTO Product (name, stock, price, category_id, desc, image_url) 
-            VALUES (@name, @stock, @price, @category_id, @desc, @image_url)
+            INSERT INTO Product (name, stock, price, category_id, desc) 
+            VALUES (@name, @stock, @price, @category_id, @desc)
         `);
     return result.rowsAffected[0] > 0;
 }
@@ -47,10 +46,9 @@ async function updateProduct(id, { name, stock, price, category_id, desc, image_
         .input('price', sql.Int, price)
         .input('category_id', sql.Int, category_id)
         .input('desc', sql.NVarChar, desc)
-        .input('image_url', sql.NVarChar, image_url)
         .query(`
             UPDATE Product 
-            SET name = @name, stock = @stock, price = @price, category_id = @category_id, desc = @desc, image_url = @image_url 
+            SET name = @name, stock = @stock, price = @price, category_id = @category_id, desc = @desc 
             WHERE id = @id
         `);
     return result.rowsAffected[0] > 0;
