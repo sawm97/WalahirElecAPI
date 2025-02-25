@@ -16,6 +16,10 @@ var app = express();
 // middleware
 const middlewareLogRequest = require('./middleware/logs');
 
+// Swagger setup
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -35,6 +39,9 @@ app.use('/documentation', documentationRouter);
 // FOR API
 app.use('/api/categories', categoryRouter);
 app.use('/api/products', productRouter);
+
+// Swagger UI route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
