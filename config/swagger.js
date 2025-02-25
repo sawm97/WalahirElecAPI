@@ -10,7 +10,7 @@ const options = {
         },
         servers: [
             {
-                url: 'https://walahirelecapi.azurewebsites.net/api-doc',
+                url: 'https://walahirelecapi.azurewebsites.net/api',
             },
         ],
     },
