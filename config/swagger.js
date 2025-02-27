@@ -10,11 +10,11 @@ const options = {
         },
         servers: [
             {
-                url: 'https://walahirelecapi.azurewebsites.net/api/',
+                url: 'https://walahirelecapi.azurewebsites.net/api',
             }
         ],
     },
-    apis: ['./routes/productRoutes.js'] // Path to the API docs
+    apis: ['./routes/productRoutes.js', './routes/categoryRoutes.js'] // Path to the API docs
 };
 
 const swaggerSpec = swaggerJSDoc(options);
