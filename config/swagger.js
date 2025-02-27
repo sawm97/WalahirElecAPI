@@ -6,15 +6,12 @@ const options = {
         info: {
             title: 'API Documentation',
             version: '1.0.0',
-            description: 'API documentation for the backend',
+            description: 'API documentation for the backend of the Walahirelec project',
         },
         servers: [
             {
-                url: 'https://walahirelecapi.azurewebsites.net/api/products',
-            },
-            {
-                url: 'https://walahirelecapi.azurewebsites.net/api/categories',
-            },
+                url: 'https://walahirelecapi.azurewebsites.net/api/',
+            }
         ],
     },
     apis: ['../routes/productRoutes.js', '../routes/categoryRoutes.js'] // Path to the API docs
