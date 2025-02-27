@@ -11,7 +11,9 @@ const options = {
         servers: [
             {
                 url: 'https://walahirelecapi.azurewebsites.net/api/products',
-                url: 'https://walahirelecapi.azurewebsites.net/api/categories',
+            },
+            {
+                url: 'https://walahirelecapi.azurewebsites.net/api/products',
             },
         ],
     },
